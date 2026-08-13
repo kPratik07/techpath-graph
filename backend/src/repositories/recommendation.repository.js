@@ -7,7 +7,9 @@ async function checkDeveloperAndRole(developerId, roleId) {
     const developerResult = await session.run(
       `
       MATCH (developer:Developer {id: $developerId})
-      RETURN count(developer) AS count
+      RETURN
+        count(developer) AS count,
+        collect(developer.name)[0] AS name
       `,
       {
         developerId
@@ -17,7 +19,9 @@ async function checkDeveloperAndRole(developerId, roleId) {
     const roleResult = await session.run(
       `
       MATCH (role:Role {id: $roleId})
-      RETURN count(role) AS count
+      RETURN
+        count(role) AS count,
+        collect(role.name)[0] AS name
       `,
       {
         roleId
@@ -25,8 +29,17 @@ async function checkDeveloperAndRole(developerId, roleId) {
     );
 
     return {
-      developerExists: developerResult.records[0].get("count").toNumber() > 0,
-      roleExists: roleResult.records[0].get("count").toNumber() > 0
+      developerExists:
+        developerResult.records[0].get("count").toNumber() > 0,
+
+      developerName:
+        developerResult.records[0].get("name"),
+
+      roleExists:
+        roleResult.records[0].get("count").toNumber() > 0,
+
+      roleName:
+        roleResult.records[0].get("name")
     };
   } finally {
     await session.close();

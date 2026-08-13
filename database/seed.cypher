@@ -4,15 +4,28 @@
 
 MERGE (d:Developer {id: "dev-001"})
 SET d.name = "Aarav Sharma",
-    d.email = "aarav@example.com";
+    d.email = "aarav@example.com",
+    d.role = "Full Stack Developer";
 
 MERGE (d:Developer {id: "dev-002"})
 SET d.name = "Meera Kapoor",
-    d.email = "meera@example.com";
+    d.email = "meera@example.com",
+    d.role = "Frontend Developer";
 
 MERGE (d:Developer {id: "dev-003"})
 SET d.name = "Rohan Verma",
-    d.email = "rohan@example.com";
+    d.email = "rohan@example.com",
+    d.role = "Backend Developer";
+
+MERGE (d:Developer {id: "dev-004"})
+SET d.name = "Pratik Raj",
+    d.email = "pratik@example.com",
+    d.role = "MERN Stack Developer";
+
+MERGE (d:Developer {id: "dev-005"})
+SET d.name = "Neha Malhotra",
+    d.email = "neha@example.com",
+    d.role = "Frontend Developer";
 
 
 // =============================
@@ -134,6 +147,10 @@ MERGE (t:Technology {id: "tech-docker"})
 SET t.name = "Docker",
     t.category = "DevOps";
 
+MERGE (t:Technology {id: "tech-cognodb"})
+SET t.name = "CognoDB",
+    t.category = "Graph Database";
+
 
 // =============================
 // PROJECTS
@@ -159,6 +176,16 @@ SET p.name = "Task Manager",
     p.description = "A collaborative application for managing tasks and projects.",
     p.difficulty = "Intermediate";
 
+MERGE (p:Project {id: "project-techpath"})
+SET p.name = "TechPath Learning Platform",
+    p.description = "A graph-based application that identifies developer skill gaps and recommends learning resources.",
+    p.difficulty = "Advanced";
+
+MERGE (p:Project {id: "project-dashboard"})
+SET p.name = "E-Commerce Dashboard",
+    p.description = "A frontend dashboard for monitoring products, orders and business metrics.",
+    p.difficulty = "Intermediate";
+
 
 // =============================
 // DEVELOPER → SKILL
@@ -176,6 +203,7 @@ MATCH (d:Developer {id: "dev-001"})
 MATCH (s:Skill {id: "skill-nodejs"})
 MERGE (d)-[:HAS_SKILL]->(s);
 
+
 MATCH (d:Developer {id: "dev-002"})
 MATCH (s:Skill {id: "skill-javascript"})
 MERGE (d)-[:HAS_SKILL]->(s);
@@ -187,6 +215,7 @@ MERGE (d)-[:HAS_SKILL]->(s);
 MATCH (d:Developer {id: "dev-002"})
 MATCH (s:Skill {id: "skill-typescript"})
 MERGE (d)-[:HAS_SKILL]->(s);
+
 
 MATCH (d:Developer {id: "dev-003"})
 MATCH (s:Skill {id: "skill-javascript"})
@@ -202,6 +231,44 @@ MERGE (d)-[:HAS_SKILL]->(s);
 
 MATCH (d:Developer {id: "dev-003"})
 MATCH (s:Skill {id: "skill-mongodb"})
+MERGE (d)-[:HAS_SKILL]->(s);
+
+
+MATCH (d:Developer {id: "dev-004"})
+MATCH (s:Skill {id: "skill-javascript"})
+MERGE (d)-[:HAS_SKILL]->(s);
+
+MATCH (d:Developer {id: "dev-004"})
+MATCH (s:Skill {id: "skill-react"})
+MERGE (d)-[:HAS_SKILL]->(s);
+
+MATCH (d:Developer {id: "dev-004"})
+MATCH (s:Skill {id: "skill-nodejs"})
+MERGE (d)-[:HAS_SKILL]->(s);
+
+MATCH (d:Developer {id: "dev-004"})
+MATCH (s:Skill {id: "skill-express"})
+MERGE (d)-[:HAS_SKILL]->(s);
+
+MATCH (d:Developer {id: "dev-004"})
+MATCH (s:Skill {id: "skill-mongodb"})
+MERGE (d)-[:HAS_SKILL]->(s);
+
+MATCH (d:Developer {id: "dev-004"})
+MATCH (s:Skill {id: "skill-typescript"})
+MERGE (d)-[:HAS_SKILL]->(s);
+
+
+MATCH (d:Developer {id: "dev-005"})
+MATCH (s:Skill {id: "skill-javascript"})
+MERGE (d)-[:HAS_SKILL]->(s);
+
+MATCH (d:Developer {id: "dev-005"})
+MATCH (s:Skill {id: "skill-react"})
+MERGE (d)-[:HAS_SKILL]->(s);
+
+MATCH (d:Developer {id: "dev-005"})
+MATCH (s:Skill {id: "skill-typescript"})
 MERGE (d)-[:HAS_SKILL]->(s);
 
 
@@ -225,6 +292,7 @@ MATCH (r:Role {id: "role-frontend"})
 MATCH (s:Skill {id: "skill-nextjs"})
 MERGE (r)-[:REQUIRES {importance: "medium"}]->(s);
 
+
 MATCH (r:Role {id: "role-backend"})
 MATCH (s:Skill {id: "skill-javascript"})
 MERGE (r)-[:REQUIRES {importance: "high"}]->(s);
@@ -240,6 +308,7 @@ MERGE (r)-[:REQUIRES {importance: "high"}]->(s);
 MATCH (r:Role {id: "role-backend"})
 MATCH (s:Skill {id: "skill-mongodb"})
 MERGE (r)-[:REQUIRES {importance: "medium"}]->(s);
+
 
 MATCH (r:Role {id: "role-fullstack"})
 MATCH (s:Skill {id: "skill-javascript"})
@@ -307,6 +376,14 @@ MATCH (d:Developer {id: "dev-003"})
 MATCH (p:Project {id: "project-taskmanager"})
 MERGE (d)-[:BUILT]->(p);
 
+MATCH (d:Developer {id: "dev-004"})
+MATCH (p:Project {id: "project-techpath"})
+MERGE (d)-[:BUILT]->(p);
+
+MATCH (d:Developer {id: "dev-005"})
+MATCH (p:Project {id: "project-dashboard"})
+MERGE (d)-[:BUILT]->(p);
+
 
 // =============================
 // PROJECT → TECHNOLOGY
@@ -324,6 +401,7 @@ MATCH (p:Project {id: "project-finance"})
 MATCH (t:Technology {id: "tech-mongodb"})
 MERGE (p)-[:USES]->(t);
 
+
 MATCH (p:Project {id: "project-ecommerce"})
 MATCH (t:Technology {id: "tech-react"})
 MERGE (p)-[:USES]->(t);
@@ -336,9 +414,11 @@ MATCH (p:Project {id: "project-ecommerce"})
 MATCH (t:Technology {id: "tech-mongodb"})
 MERGE (p)-[:USES]->(t);
 
+
 MATCH (p:Project {id: "project-portfolio"})
 MATCH (t:Technology {id: "tech-nextjs"})
 MERGE (p)-[:USES]->(t);
+
 
 MATCH (p:Project {id: "project-taskmanager"})
 MATCH (t:Technology {id: "tech-react"})
@@ -350,6 +430,32 @@ MERGE (p)-[:USES]->(t);
 
 MATCH (p:Project {id: "project-taskmanager"})
 MATCH (t:Technology {id: "tech-docker"})
+MERGE (p)-[:USES]->(t);
+
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (t:Technology {id: "tech-react"})
+MERGE (p)-[:USES]->(t);
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (t:Technology {id: "tech-nodejs"})
+MERGE (p)-[:USES]->(t);
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (t:Technology {id: "tech-mongodb"})
+MERGE (p)-[:USES]->(t);
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (t:Technology {id: "tech-cognodb"})
+MERGE (p)-[:USES]->(t);
+
+
+MATCH (p:Project {id: "project-dashboard"})
+MATCH (t:Technology {id: "tech-react"})
+MERGE (p)-[:USES]->(t);
+
+MATCH (p:Project {id: "project-dashboard"})
+MATCH (t:Technology {id: "tech-nextjs"})
 MERGE (p)-[:USES]->(t);
 
 
@@ -369,6 +475,7 @@ MATCH (p:Project {id: "project-finance"})
 MATCH (s:Skill {id: "skill-nodejs"})
 MERGE (p)-[:DEMONSTRATES]->(s);
 
+
 MATCH (p:Project {id: "project-ecommerce"})
 MATCH (s:Skill {id: "skill-react"})
 MERGE (p)-[:DEMONSTRATES]->(s);
@@ -381,6 +488,7 @@ MATCH (p:Project {id: "project-ecommerce"})
 MATCH (s:Skill {id: "skill-mongodb"})
 MERGE (p)-[:DEMONSTRATES]->(s);
 
+
 MATCH (p:Project {id: "project-portfolio"})
 MATCH (s:Skill {id: "skill-javascript"})
 MERGE (p)-[:DEMONSTRATES]->(s);
@@ -388,6 +496,7 @@ MERGE (p)-[:DEMONSTRATES]->(s);
 MATCH (p:Project {id: "project-portfolio"})
 MATCH (s:Skill {id: "skill-nextjs"})
 MERGE (p)-[:DEMONSTRATES]->(s);
+
 
 MATCH (p:Project {id: "project-taskmanager"})
 MATCH (s:Skill {id: "skill-react"})
@@ -399,4 +508,42 @@ MERGE (p)-[:DEMONSTRATES]->(s);
 
 MATCH (p:Project {id: "project-taskmanager"})
 MATCH (s:Skill {id: "skill-docker"})
+MERGE (p)-[:DEMONSTRATES]->(s);
+
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (s:Skill {id: "skill-javascript"})
+MERGE (p)-[:DEMONSTRATES]->(s);
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (s:Skill {id: "skill-react"})
+MERGE (p)-[:DEMONSTRATES]->(s);
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (s:Skill {id: "skill-nodejs"})
+MERGE (p)-[:DEMONSTRATES]->(s);
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (s:Skill {id: "skill-express"})
+MERGE (p)-[:DEMONSTRATES]->(s);
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (s:Skill {id: "skill-mongodb"})
+MERGE (p)-[:DEMONSTRATES]->(s);
+
+MATCH (p:Project {id: "project-techpath"})
+MATCH (s:Skill {id: "skill-typescript"})
+MERGE (p)-[:DEMONSTRATES]->(s);
+
+
+MATCH (p:Project {id: "project-dashboard"})
+MATCH (s:Skill {id: "skill-javascript"})
+MERGE (p)-[:DEMONSTRATES]->(s);
+
+MATCH (p:Project {id: "project-dashboard"})
+MATCH (s:Skill {id: "skill-react"})
+MERGE (p)-[:DEMONSTRATES]->(s);
+
+MATCH (p:Project {id: "project-dashboard"})
+MATCH (s:Skill {id: "skill-typescript"})
 MERGE (p)-[:DEMONSTRATES]->(s);

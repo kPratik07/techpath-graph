@@ -24,15 +24,16 @@ async function getRecommendations(developerId, roleId) {
     roleId
   );
 
+  // Developer already has all required skills
   if (skillGaps.length === 0) {
     return {
       developer: {
         id: developerId,
-        name: null
+        name: existence.developerName
       },
       role: {
         id: roleId,
-        name: null
+        name: existence.roleName
       },
       missingSkills: []
     };
