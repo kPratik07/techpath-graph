@@ -1,28 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectionPanel from "./components/SelectionPanel";
 import { getRecommendations } from "./services/recommendationApi";
 import SkillGapResults from "./components/SkillGapResults";
 import LoadingState from "./components/LoadingState";
 import EmptyState from "./components/EmptyState";
 
-const developers = [
-  { id: "dev-001", name: "Aarav Sharma" },
-  { id: "dev-002", name: "Meera Kapoor" },
-  { id: "dev-003", name: "Rohan Verma" },
-];
-
-const roles = [
-  { id: "role-frontend", name: "Frontend Developer" },
-  { id: "role-backend", name: "Backend Developer" },
-  { id: "role-fullstack", name: "Full Stack Developer" },
-];
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
+  const [developers, setDevelopers] = useState([]);
+  const [roles, setRoles] = useState([]);
+
   const [selectedDeveloper, setSelectedDeveloper] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
   const [recommendations, setRecommendations] = useState(null);
+
   const [loading, setLoading] = useState(false);
+  const [loadingOptions, setLoadingOptions] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadOptions() {
+      try {
+        const [developersResponse, rolesResponse] = await Promise.all([
+          fetch(`${API_BASE_URL}/developers`),
+          fetch(`${API_BASE_URL}/roles`),
+        ]);
+
+        if (!developersResponse.ok || !rolesResponse.ok) {
+          throw new Error("Failed to load developers or roles");
+        }
+
+        const developersData = await developersResponse.json();
+        const rolesData = await rolesResponse.json();
+
+        setDevelopers(developersData);
+        setRoles(rolesData);
+      } catch (error) {
+        setError(error.message || "Failed to load developers and roles.");
+      } finally {
+        setLoadingOptions(false);
+      }
+    }
+
+    loadOptions();
+  }, []);
 
   async function handleSubmit() {
     if (!selectedDeveloper || !selectedRole) {
@@ -66,16 +88,20 @@ function App() {
           </p>
         </header>
 
-        <SelectionPanel
-          developers={developers}
-          roles={roles}
-          selectedDeveloper={selectedDeveloper}
-          selectedRole={selectedRole}
-          onDeveloperChange={setSelectedDeveloper}
-          onRoleChange={setSelectedRole}
-          onSubmit={handleSubmit}
-          loading={loading}
-        />
+        {loadingOptions ? (
+          <LoadingState />
+        ) : (
+          <SelectionPanel
+            developers={developers}
+            roles={roles}
+            selectedDeveloper={selectedDeveloper}
+            selectedRole={selectedRole}
+            onDeveloperChange={setSelectedDeveloper}
+            onRoleChange={setSelectedRole}
+            onSubmit={handleSubmit}
+            loading={loading}
+          />
+        )}
 
         {error && !loading && (
           <div className="mt-8 rounded-2xl border border-red-900/60 bg-red-950/30 p-6">
@@ -85,9 +111,7 @@ function App() {
                   Something went wrong
                 </p>
 
-                <p className="mt-1 text-sm text-red-200/70">
-                  {error || "We couldn't analyze your skill gap right now."}
-                </p>
+                <p className="mt-1 text-sm text-red-200/70">{error}</p>
               </div>
 
               <button
@@ -106,9 +130,9 @@ function App() {
           <LoadingState />
         ) : recommendations ? (
           <SkillGapResults recommendations={recommendations} />
-        ) : (
+        ) : !loadingOptions ? (
           <EmptyState />
-        )}
+        ) : null}
       </div>
     </main>
   );

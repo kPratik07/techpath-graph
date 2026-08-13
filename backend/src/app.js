@@ -1,8 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 
+
 const recommendationRoutes = require(
   "./routes/recommendation.routes"
+);
+
+const developerRoutes = require(
+  "./routes/developer.routes"
+);
+
+const roleRoutes = require(
+  "./routes/role.routes"
 );
 
 const app = express();
@@ -30,6 +39,16 @@ app.get("/health", (req, res) => {
 app.use(
   "/api/recommendations",
   recommendationRoutes
+);
+
+app.use(
+  "/api/developers",
+  developerRoutes
+);
+
+app.use(
+  "/api/roles",
+  roleRoutes
 );
 
 module.exports = app;

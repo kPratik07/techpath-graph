@@ -229,10 +229,57 @@ async function getDevelopersForRole(roleId) {
   }
 }
 
+async function getDevelopers() {
+  const session = driver.session();
+
+  try {
+    const result = await session.run(
+      `
+      MATCH (developer:Developer)
+      RETURN
+        developer.id AS developerId,
+        developer.name AS developerName
+      ORDER BY developerName
+      `
+    );
+
+    return result.records.map((record) => ({
+      id: record.get("developerId"),
+      name: record.get("developerName")
+    }));
+  } finally {
+    await session.close();
+  }
+}
+async function getRoles() {
+  const session = driver.session();
+
+  try {
+    const result = await session.run(
+      `
+      MATCH (role:Role)
+      RETURN
+        role.id AS roleId,
+        role.name AS roleName
+      ORDER BY roleName
+      `
+    );
+
+    return result.records.map((record) => ({
+      id: record.get("roleId"),
+      name: record.get("roleName")
+    }));
+  } finally {
+    await session.close();
+  }
+}
+
 module.exports = {
   checkDeveloperAndRole,
   getSkillGap,
   getResourcesForSkills,
   getDeveloperTechnologies,
-  getDevelopersForRole
+  getDevelopersForRole,
+  getDevelopers,
+  getRoles
 };
