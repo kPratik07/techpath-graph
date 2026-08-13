@@ -116,6 +116,12 @@ SET r.title = "Node.js Documentation",
     r.url = "https://nodejs.org/docs/latest/api/",
     r.difficulty = "Intermediate";
 
+MERGE (r:Resource {id: "resource-mongodb"})
+SET r.title = "MongoDB Documentation",
+    r.type = "Documentation",
+    r.url = "https://www.mongodb.com/docs/",
+    r.difficulty = "Intermediate";
+
 MERGE (r:Resource {id: "resource-docker"})
 SET r.title = "Docker Get Started",
     r.type = "Tutorial",
@@ -349,6 +355,10 @@ MERGE (r)-[:TEACHES]->(s);
 
 MATCH (r:Resource {id: "resource-nodejs"})
 MATCH (s:Skill {id: "skill-nodejs"})
+MERGE (r)-[:TEACHES]->(s);
+
+MATCH (r:Resource {id: "resource-mongodb"})
+MATCH (s:Skill {id: "skill-mongodb"})
 MERGE (r)-[:TEACHES]->(s);
 
 MATCH (r:Resource {id: "resource-docker"})

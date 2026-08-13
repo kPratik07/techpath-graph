@@ -3,9 +3,7 @@
 > **Discover the skills you need. Find the right resources. Build your path.**
 
 TechPath identifies the **skill gaps between a developer's current skills and a target role**, then recommends relevant learning resources.
-
 The application uses **CognoDB** to model relationships between developers, skills, roles, projects, technologies, and learning resources.
-
 ---
 ## ✨ Features
 
@@ -16,7 +14,6 @@ The application uses **CognoDB** to model relationships between developers, skil
 - ⚡ REST API for skill-gap recommendations
 - 🛡️ Loading, empty, error, and retry states
 - 📱 Responsive UI
-
 ---
 ## 🏗️ Tech Stack
 
@@ -28,12 +25,10 @@ The application uses **CognoDB** to model relationships between developers, skil
 | 🗃️ Database | CognoDB |
 | 🧠 Query Language | Cypher |
 | 🔌 API | REST |
-
 ---
 ## 🧩 Why a Graph Database?
 
 TechPath is centered around relationships between developers, skills, roles, projects, technologies, and resources.
-
 A graph database makes these relationships natural to model and query.
 
 ```text
@@ -54,9 +49,7 @@ A graph database makes these relationships natural to model and query.
                               │
 📚 Resource ── TEACHES ──────┘
 ```
-
 The recommendation engine compares a developer's `HAS_SKILL` relationships with the skills a target role `REQUIRES` and identifies the missing skills.
-
 ---
 ## 🗂️ Data Model
 
@@ -79,7 +72,6 @@ Developer ──BUILT──────────→ Project
 Project ───USES────────────→ Technology
 Project ───DEMONSTRATES────→ Skill
 ```
-
 ---
 # ⚙️ Setup
 
@@ -95,7 +87,6 @@ Project ───DEMONSTRATES────→ Skill
 git clone <your-repository-url>
 cd techpath-graph
 ```
-
 ---
 ## 2️⃣ Configure the Backend
 
@@ -127,7 +118,6 @@ From the `backend` directory:
 node scripts/run-schema.js
 ```
 This creates the required uniqueness constraints for the graph nodes.
-
 ---
 ## 4️⃣ Seed the Database
 
@@ -135,14 +125,12 @@ This creates the required uniqueness constraints for the graph nodes.
 node scripts/run-seed.js
 ```
 This creates the sample developers, skills, roles, resources, projects, technologies, and relationships.
-
 ---
 ## 5️⃣ Start the Backend
 
 ```bash
 node src/server.js
 ```
-
 The API will run on:
 
 ```text
@@ -177,7 +165,6 @@ Open:
 http://localhost:5173
 ```
 ---
-
 ## 🔌 API
 
 ### Health Check
@@ -203,25 +190,3 @@ The response contains:
 - Missing skills
 - Recommended learning resources
 ---
-## 🧪 Testing
-
-Backend tests cover graph data, relationships, skill gaps, resource URLs, developer-role matching, and recommendation API behavior.
-
-Run from `backend`:
-
-```bash
-node src/tests/test-graph.js
-node src/tests/test-relationships.js
-node src/tests/test-skill-gap.js
-```
----
-## 🔐 Security
-
-Keep database credentials in:
-
-```text
-backend/.env
-```
-The `.env` file should remain excluded from Git.
-
-Use `.env.example` as the configuration template.
